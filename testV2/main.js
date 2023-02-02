@@ -34,7 +34,7 @@ window.addEventListener('load', function () {
         // Grid de la box
         var axes = new THREE.AxisHelper(50);
         scene.add(axes);
-        var gridXZ = new THREE.GridHelper(400, 10);
+        var gridXZ = new THREE.GridHelper(400, 40);
         scene.add(gridXZ);
 
         // lumières
@@ -53,19 +53,13 @@ window.addEventListener('load', function () {
         camera.position.y = 10;
 
         var boxGeometry = new THREE.BoxGeometry(20, 20, 20);
-        // box.position.y = 120;
+
         var boxMaterial = new THREE.MeshPhongMaterial({
-            color: 'rgba(255, 255, 255, 0.5)',
+            color: 'green',
             transparent: true,
             opacity: 0.5,
             shading: THREE.FlatShading
         });
-
-
-
-
-
-
         var box = new THREE.Mesh(boxGeometry, boxMaterial);
         box.position.y = 10;
         var edges = new THREE.EdgesGeometry(boxGeometry);
@@ -74,9 +68,37 @@ window.addEventListener('load', function () {
             linewidth: 2
         });
         var line = new THREE.LineSegments(edges, lineMaterial);
-
         box.add(line);
+        box.up.set(0, 0, 1);
+        scene.add(box);
 
+
+
+        camera.lookAt(box.position);
+        window.addEventListener('resize', onWindowResize, false);
+
+
+        // box2
+        camera.position.y = 10;
+
+        var boxGeometry2 = new THREE.BoxGeometry(20, 20, 20);
+
+        var boxMaterial = new THREE.MeshPhongMaterial({
+            color: 'red',
+            transparent: true,
+            opacity: 0.5,
+            shading: THREE.FlatShading
+        });
+        var box = new THREE.Mesh(boxGeometry2, boxMaterial);
+        box.position.y = 10;
+        box.position.z = 30;
+        var edges = new THREE.EdgesGeometry(boxGeometry2);
+        var lineMaterial = new THREE.LineBasicMaterial({
+            color: 'black',
+            linewidth: 2
+        });
+        var line = new THREE.LineSegments(edges, lineMaterial);
+        box.add(line);
         box.up.set(0, 0, 1);
         scene.add(box);
 
