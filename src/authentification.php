@@ -2,7 +2,7 @@
 $host = 'localhost';
 $db   = 'root';
 $user = 'root';
-$pass = 'root';
+$pass = '';
 $dsn = "pgsql:host=$host;dbname=$db";
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
