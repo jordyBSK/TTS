@@ -5,10 +5,7 @@
     require "../vendor/autoload.php";
     require "../src/header.php";
 ?>
-<img src="./img/jobtrek.png">
-<?php
-    require "../src/footer.php";
-?>
+<img width="100%" height="75%" src="./img/jobtrek.png">
 
 
 
