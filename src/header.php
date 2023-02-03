@@ -21,8 +21,6 @@
             <a class="navbar-brand" href="index.php">
                 Home
             </a>
-            <a class="navbar-brand" href="index.php">
-            </a>
             <?php
             if ($title != "login"){ ?>
             <a href="login.php" type="button" class="btn btn-success">Login</a>

@@ -1,5 +1,9 @@
 <?php
 
+session_start();
+$title = "login";
+$style = "index.css";
+require "../vendor/autoload.php";
 require_once '../src/authentification.php';
 
 
@@ -22,9 +26,6 @@ require_once '../src/header.php';
 
     <section class="section">
         <div class="container">
-            <h1 class="title is-1">
-                Connect you here to access the database and all the infos !</h1>
-            <h2 class="subtitle">Notice : Only the administrator can do that.</h2><br>
             <div class="columns is-multiline">
                 <div class="is-child box column is-8 is-offset-2">
                     <form action="login.php"
@@ -53,7 +54,3 @@ require_once '../src/header.php';
             </div>
         </div>
     </section>
-
-<?php
-
-require_once '../src/footer.php';
