@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
-$db   = '';
-$user = 'root';
-$pass = 'root';
+$db   = 'tts';
+$user = 'fady';
+$pass = 'fadyfady';
 $dsn = "pgsql:host=$host;dbname=$db";
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
