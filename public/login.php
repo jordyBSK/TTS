@@ -23,8 +23,8 @@ require_once '../src/header.php';
 
 ?>
 
-<section class="section">
-    <div class="container">
+<section>
+    <div>
         <div class="columns is-multiline">
             <div class="is-child box column is-8 is-offset-2">
                 <form action="login.php"
@@ -53,4 +53,4 @@ require_once '../src/header.php';
         </div>
     </div>
 </section>
-<a href="singup.php">Don't have any account?Sign up Now!</a>
+<a href="singup.php">Don't have any account?Sign up Now! 😃 </a>

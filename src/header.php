@@ -28,6 +28,7 @@ $user = $_COOKIE['user']
             </a>
             <?php
             if (!empty($user)) { ?>
+                <a type="button" class="btn btn-success" href="3Dpage.php">VIEW ROOM</a>
                 <div class="dropdown" >
                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
