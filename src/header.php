@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+$user = $_COOKIE['user']
+?>
 <!doctype html>
 <HTML>
 <head>
@@ -13,7 +18,7 @@
 <body>
 <header>
     <nav class="navbar bg-light">
-        <div class="container-fluid">
+        <div class="container">
             <a class="navbar-brand " href="index.php">
                 <img src="/img/logo.svg" alt="" width="50" height="50" class="d-inline-block align-text-center">
                 Time to Space
@@ -22,9 +27,22 @@
                 Home
             </a>
             <?php
-            if ($title != "login"){ ?>
-            <a href="login.php" type="button" class="btn btn-success">Login</a>
-            <?php }?>
+            if (!empty($user)) { ?>
+                <div class="dropdown" >
+                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <?=$user?>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                    </ul>
+                </div>
+            <?php } else { ?>
+                <a href="login.php" type="button" class="btn btn-success">LOGIN</a>
+            <?php } ?>
         </div>
     </nav>
 </header>
+
