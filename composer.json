@@ -1,0 +1,19 @@
+{
+    "name": "fady/tts",
+    "autoload": {
+        "psr-4": {
+            "Fady\\Tts\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "FY4ll"
+        }
+    ],
+    "require": {
+        "ext-pdo": "*"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^6.2"
+    }
+}
