@@ -18,7 +18,6 @@ if (isset($_POST['submit'])) {
     <?php }
 }
 
-
 require_once '../src/header.php';
 
 ?>

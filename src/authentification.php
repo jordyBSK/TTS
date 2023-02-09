@@ -1,7 +1,7 @@
 <?php
-$host = 'localhost';
-$db   = 'root';
-$user = 'root';
+$host = '';
+$db   = '';
+$user = '';
 $pass = '';
 $dsn = "pgsql:host=$host;dbname=$db";
 $options = [
@@ -42,11 +42,4 @@ function connect ($username, $password, $pdo): bool
 }
 
 
-function disconnect () {
-    $_SESSION['connected'] = false;
-    header('Location: index.php');
-}
 
-function isConnected (): bool {
-    return $_SESSION['connected'];
-}

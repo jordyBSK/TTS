@@ -1,2 +1,5 @@
 /vendor/
 /src/authentification.php
+.env
+rooms.json
+roomsAvaibility.json
