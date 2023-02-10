@@ -26,13 +26,11 @@ $user = $_COOKIE['user']
             <a class="navbar-brand" href="index.php">
                 Home
             </a>
-            <?php
-            if (!empty($user)) { ?>
+
                 <a type="button" class="btn btn-success" href="3Dpage.php">VIEW ROOM</a>
                 <div class="dropdown" >
                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-                        <?=$user?>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Action</a></li>
@@ -40,9 +38,8 @@ $user = $_COOKIE['user']
                         <li><a class="dropdown-item" href="#">Action</a></li>
                     </ul>
                 </div>
-            <?php } else { ?>
+
                 <a href="login.php" type="button" class="btn btn-success">LOGIN</a>
-            <?php } ?>
         </div>
     </nav>
 </header>

@@ -5,12 +5,16 @@ $style = "index.css";
 require "../vendor/autoload.php";
 require "../src/header.php";?>
 
+
+<!-- Importer depuis codepen-->
+<script src="https://assets.codepen.io/4027472/three.min.js"></script>
+
+<script src="https://assets.codepen.io/4027472/OrbitControls.js"></script>
+
+<script src="https://assets.codepen.io/4027472/GLTFLoader.js"></script>
+
 <div id="container"></div>
 
-<script src="https://unpkg.com/three@0.85.0/build/three.min.js"></script>
-<script src="https://unpkg.com/three@0.85.0/examples/js/Detector.js"></script>
-<script src="https://unpkg.com/three@0.85.0/examples/js/libs/stats.min.js"></script>
-<script src="https://unpkg.com/three@0.85.0/examples/js/controls/OrbitControls.js"></script>
 
 
 
