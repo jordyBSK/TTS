@@ -1,8 +1,15 @@
 <?php
+
 $host = 'localhost';
 $db   = 'tts';
 $user = 'adil';
 $pass = '123';
+
+$host = '';
+$db   = '';
+$user = '';
+$pass = '';
+
 $dsn = "pgsql:host=$host;dbname=$db";
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -42,11 +49,4 @@ function connect ($username, $password, $pdo): bool
 }
 
 
-function disconnect () {
-    $_SESSION['connected'] = false;
-    header('Location: index.php');
-}
 
-function isConnected (): bool {
-    return $_SESSION['connected'];
-}
