@@ -12,8 +12,8 @@ $user = $_COOKIE['user']
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <link rel="stylesheet" href="/public/style/<?=$style?>">
-    <title><?=$title?></title>
+    <link rel="stylesheet" href="/public/style/<?= $style ?>">
+    <title><?= $title ?></title>
 </head>
 <body>
 <header>
@@ -26,11 +26,15 @@ $user = $_COOKIE['user']
             <a class="navbar-brand" href="index.php">
                 Home
             </a>
-
-                <a type="button" class="btn btn-success" href="3Dpage.php">VIEW ROOM</a>
-                <div class="dropdown" >
+            <?php
+            if (!empty($user)) { ?>
+                <?php if ($title != "Overview") { ?>
+                    <a type="button" class="btn btn-success" href="3Dpage.php">VIEW ROOM</a>
+                <?php } ?>
+                <div class="dropdown">
                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
+                        <?= $user ?>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Action</a></li>
@@ -38,9 +42,9 @@ $user = $_COOKIE['user']
                         <li><a class="dropdown-item" href="#">Action</a></li>
                     </ul>
                 </div>
-
+            <?php } else { ?>
                 <a href="login.php" type="button" class="btn btn-success">LOGIN</a>
+            <?php } ?>
         </div>
     </nav>
 </header>
-
