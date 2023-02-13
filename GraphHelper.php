@@ -118,11 +118,10 @@ class GraphHelper
             return $properties["emailAddress"];
         }, $filteredRooms);
         foreach ($roomEmails as $roommail) {
-            $startDateTime = "2023-02-10T12:00:00Z";
-            $endDateTime = "2023-02-10T16:55:00Z";
+            $currentTime = time();
+            $startDateTime = date("c", $currentTime);
+            $endDateTime = date("c", $currentTime + 1);
             $curl = curl_init();
-            dump($roommail);
-
             curl_setopt_array($curl, array(
                 CURLOPT_URL => "https://graph.microsoft.com/v1.0/users/" . urlencode($roommail) . "/calendar/calendarView?startDateTime=" . urlencode($startDateTime) . "&endDateTime=" . urlencode($endDateTime),
                 CURLOPT_RETURNTRANSFER => true,
@@ -147,12 +146,22 @@ class GraphHelper
                 echo "cURL Error #:" . $err;
             } else {
                 $schedules = json_decode($response);
+                $availability = "Available";
+                if (count($schedules->value) > 0) {
+                    $availability = "Not available";
+                }
+
+                $scheduleData = array(
+                    "roomName" => $roommail,
+                    "availability" => $availability
+                );
+
                 $scheduleFile = fopen("schedules.json", "a");
-                fwrite($scheduleFile, "\n".json_encode($schedules, JSON_PRETTY_PRINT));
+                fwrite($scheduleFile, "\n".json_encode($scheduleData, JSON_PRETTY_PRINT));
                 fclose($scheduleFile);
 
                 echo "Schedules saved in schedules.json";
             }
+            }
         }
-    }
 }
