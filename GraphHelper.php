@@ -4,7 +4,6 @@ use Microsoft\Graph\Graph;
 use Microsoft\Graph\Http;
 use Microsoft\Graph\Model;
 use GuzzleHttp\{Client};
-
 class GraphHelper
 {
     private static Client $tokenClient;
@@ -23,6 +22,10 @@ class GraphHelper
         GraphHelper::$userClient = new Graph();
     }
 
+    /**
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     */
     public static function getUserToken(): string
     {
         // If we already have a user token, just return it
@@ -90,7 +93,12 @@ class GraphHelper
         }
     }
 
-    public static function getRoom()
+    /**
+     * @throws \Microsoft\Graph\Exception\GraphException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     */
+    public static function getRoom(): void
     {
         $token = GraphHelper::getUserToken();
         GraphHelper::$userClient->setAccessToken($token);
@@ -101,21 +109,50 @@ class GraphHelper
             ->setReturnType(Model\Room::class)
             ->execute();
         $filteredRooms = array_filter($rooms, function ($room) {
-            return strpos($room->getDisplayName(), "Lausanne") !== false;
+            return str_contains($room->getDisplayName(), "Lausanne");
         });
         $jsonData = json_encode($filteredRooms);
         file_put_contents("rooms.json", $jsonData);
-        $roomIDs = array_map(function ($room) {
-            return $room->getId();
+        $roomEmails = array_map(function($filteredRooms) {
+            $properties = $filteredRooms->getProperties();
+            return $properties["emailAddress"];
         }, $filteredRooms);
+        foreach ($roomEmails as $roommail) {
+            $startDateTime = "2023-02-10T12:00:00Z";
+            $endDateTime = "2023-02-10T16:55:00Z";
+            $curl = curl_init();
+            dump($roommail);
 
-       foreach ($roomIDs as $roomID){
-           $roomAvailability = $graph->createRequest("POST", "https://graph.microsoft.com/v1.0/users/$roomID/calendar/getSchedule")
-               ->setReturnType(Model\Event::class)
-               ->execute();
-           $jsonData = json_encode($roomAvailability);
-           file_put_contents("roomsAvaibility.json", $jsonData);
-       }
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://graph.microsoft.com/v1.0/users/" . urlencode($roommail) . "/calendar/calendarView?startDateTime=" . urlencode($startDateTime) . "&endDateTime=" . urlencode($endDateTime),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: Bearer " . $token,
+                    "Content-Type: application/json"
+                ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+                echo "cURL Error #:" . $err;
+            } else {
+                $schedules = json_decode($response);
+                $scheduleFile = fopen("schedules.json", "a");
+                fwrite($scheduleFile, "\n".json_encode($schedules, JSON_PRETTY_PRINT));
+                fclose($scheduleFile);
+
+                echo "Schedules saved in schedules.json";
+            }
+        }
     }
-
 }
