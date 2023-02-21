@@ -1,0 +1,102 @@
+.select-room:hover {
+    background-color: #1ea365;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(22, 123, 76, 0.5);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Styles pour le bouton "Select Room" */
+.select-room {
+    top: 115px;
+    left: 10px;
+    display: inline-block;
+    background-color: #198754;
+    padding: 20px 20px;
+    border-radius: 10px;
+    width: 200px;
+    height: 30px;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+}
+
+
+.roomsLink:hover {
+    background-color: #dcdcdc;
+    transform: scale(1.1);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Styles pour le menu déroulant */
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 155px;
+    /* Ajuster la position verticale si nécessaire */
+    left: 0;
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+
+    margin-left: 10px;
+    padding: 10px;
+}
+
+/* Styles pour chaque option de menu */
+.dropdown a {
+    display: block;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.arrow {
+    margin-left: 40px;
+}
+
+.dropdown:hover {
+    display: block;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px #3c3c3c;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Styles pour l'option de menu sélectionnée */
+.dropdown a.selected {
+    background-color: #ccc;
+}
+
+/* Styles pour les liens de salle dans le menu déroulant */
+.dropdown a.roomsLink:hover {
+    background-color: #dcdcdc;
+    transform: none;
+    transition: none;
+}
+
+.roomsLink:hover {
+    background-color: #bfbfbf;
+    transform: scale(1.05, 1.05);
+}
+
+/* Styles pour le contenu affiché lorsque l'option est sélectionnée */
+.dropdown-content {
+    display: none;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Styles pour afficher le contenu de l'option sélectionnée */
+.show-content {
+    display: block;
+}

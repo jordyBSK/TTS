@@ -47,4 +47,3 @@ $graph->login();
         </div>
     </nav>
 </header>
-

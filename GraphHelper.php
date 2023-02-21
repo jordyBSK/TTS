@@ -8,8 +8,7 @@ class GraphHelper
     private static string $tenantId;
     private static Graph $userClient;
     public static string $userToken;
-
-
+    
     public static function initializeGraphForUserAuth(): void
     {
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
