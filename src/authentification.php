@@ -1,9 +1,9 @@
 <?php
 
-$host = '';
-$db   = '';
-$user = '';
-$pass = '';
+$host = 'localhost';
+$db   = 'tts';
+$user = 'adil';
+$pass = '123';
 
 
 $dsn = "pgsql:host=$host;dbname=$db";
