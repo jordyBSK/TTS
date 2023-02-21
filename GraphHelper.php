@@ -120,7 +120,7 @@ class GraphHelper
 
                 }
             }
-            $scheduleFile = fopen("schedules.json", "a");
+            $scheduleFile = fopen("schedules.json", "w");
             fwrite($scheduleFile, json_encode($globalarray));
             fclose($scheduleFile);
         }
