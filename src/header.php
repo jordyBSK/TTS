@@ -1,7 +1,10 @@
 <?php
+require_once '../GraphHelper.php';
+require_once '../vendor/autoload.php';
 session_start();
-
-$user = $_COOKIE['user']
+$_SESSION['state'] = session_id();
+$graph = new GraphHelper();
+$graph->login();
 ?>
 <!doctype html>
 <HTML>
@@ -26,25 +29,22 @@ $user = $_COOKIE['user']
             <a class="navbar-brand" href="index.php">
                 Home
             </a>
-            <?php
-            if (!empty($user)) { ?>
-                <?php if ($title != "Overview") { ?>
-                    <a type="button" class="btn btn-success" href="3Dpage.php">VIEW ROOM</a>
-                <?php } ?>
-                <div class="dropdown">
-                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        <?= $user ?>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                    </ul>
-                </div>
-            <?php } else { ?>
-                <a href="login.php" type="button" class="btn btn-success">LOGIN</a>
-            <?php } ?>
+            <a type="button" class="btn btn-success" href="3Dpage.php">VIEW ROOM</a>
+            <div class="dropdown">
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <a type="button" class="btn btn-success" id="login">G3</a>
+                </ul>
+            </div>
+
+            <input type="submit" class="btn btn-success" value="" name="LOGIN">
+
         </div>
     </nav>
 </header>
+
