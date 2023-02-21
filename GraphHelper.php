@@ -21,15 +21,7 @@ class GraphHelper
 
     public static function login()
     {
-        $token = [];
         GraphHelper::initializeGraphForUserAuth();
-        if (isset ($_SESSION['msatg'])) {
-
-            echo "<h2>Authenticated " . $_SESSION["uname"] . " </h2><br> ";
-
-            echo '<p><a href="?action=logout">Log Out</a></p>';
-
-        } else   echo '<h2><p>You can <a href="?action=login">Log In</a> with Microsoft</p></h2>';
         if ($_GET['action'] == 'login') {
             $login_url = "https://login.microsoftonline.com/" . GraphHelper::$tenantId . "/oauth2/v2.0/authorize";
             $params = array('client_id' => GraphHelper::$clientId,
@@ -63,6 +55,7 @@ class GraphHelper
                 $_SESSION['msatg'] = 1;  //auth and verified
                 $_SESSION['uname'] = $rez["displayName"];
                 $_SESSION['id'] = $rez["id"];
+
             }
             curl_close($ch);
             header('Location: http://localhost:8080/3Dpage.php');
@@ -86,6 +79,7 @@ class GraphHelper
                 $properties = $filteredRooms->getProperties();
                 return $properties["emailAddress"];
             }, $filteredRooms);
+            $globalarray = array();
             foreach ($roomEmails as $roommail) {
                 $currentTime = time();
                 $startDateTime = date("c", $currentTime);
@@ -102,7 +96,6 @@ class GraphHelper
                     CURLOPT_CUSTOMREQUEST => "GET",
                     CURLOPT_HTTPHEADER => array(
                         "Authorization: Bearer " . $token,
-                        "Content-Type: application/json"
                     ),
                 ));
 
@@ -119,21 +112,22 @@ class GraphHelper
                     if (count($schedules->value) > 0) {
                         $availability = "Not available";
                     }
-                    $scheduleData = array([
+                    $scheduleData = array(
                         "roomName" => $roommail,
                         "availability" => $availability
-                    ]
                     );
-                    $scheduleFile = fopen("schedules.json", "a");
-                    fwrite($scheduleFile, json_encode($scheduleData));
-                    fclose($scheduleFile);
-                }
+                    array_push($globalarray, $scheduleData);
 
+                }
             }
+            $scheduleFile = fopen("schedules.json", "a");
+            fwrite($scheduleFile, json_encode($globalarray));
+            fclose($scheduleFile);
         }
         if ($_GET['action'] == 'logout') {
             unset ($_SESSION['msatg']);
             header('Location: http://localhost:8080/3Dpage.php');
         }
+
     }
 }
