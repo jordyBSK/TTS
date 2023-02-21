@@ -67,9 +67,10 @@ class GraphHelper
             }
             curl_close($ch);
             header('Location: http://localhost:8080/3Dpage.php');
+            //GET ROOM
             GraphHelper::$userClient->setAccessToken($token);
             $scheduleFile = fopen("schedules.json", "w");
-            fwrite($scheduleFile, json_encode("A laise mon reuf"));
+            fwrite($scheduleFile, json_encode("application/json"));
             fclose($scheduleFile);
             $graph = new Graph();
             $graph->setBaseUrl("https://graph.microsoft.com/v1.0/");
@@ -119,22 +120,20 @@ class GraphHelper
                     if (count($schedules->value) > 0) {
                         $availability = "Not available";
                     }
-                    $scheduleData = array(
+                    $scheduleData = array([
                         "roomName" => $roommail,
                         "availability" => $availability
+                    ]
                     );
-
                     $scheduleFile = fopen("schedules.json", "a");
-                    fwrite($scheduleFile, "\n" . json_encode($scheduleData, JSON_PRETTY_PRINT));
+                    fwrite($scheduleFile, json_encode($scheduleData));
                     fclose($scheduleFile);
-                    echo "EZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
                 }
+
             }
         }
         if ($_GET['action'] == 'logout') {
-
             unset ($_SESSION['msatg']);
-
             header('Location: http://localhost:8080/3Dpage.php');
         }
     }
