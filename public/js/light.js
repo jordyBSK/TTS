@@ -69,9 +69,9 @@ fetch('/schedules.json')
 
 
 
-function addLight(position, disponibilité) {
+function addLight(position, disponibilite) {
 
-    let couleur = disponibilité === "Available" ? 'green' : 'red'
+    let couleur = disponibilite === "Available" ? 'green' : 'red'
 
     let spotLight = new THREE.SpotLight(couleur, 300);
 

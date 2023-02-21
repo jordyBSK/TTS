@@ -32,7 +32,9 @@ $graph->login();
             <a type="button" class="btn btn-success" href="3Dpage.php">VIEW ROOM</a>
             <?php if(empty($_SESSION['msatg'])){?>
                 <a href="?action=login" type="button" class="btn btn-success">LOGIN</a>
-            <?php }?>
+            <?php }else{?>
+                <a href="?action=logout" type="button" class="btn btn-success">LOGOUT from: </a>
+            <?php } ?>
             <div class="dropdown">
                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">

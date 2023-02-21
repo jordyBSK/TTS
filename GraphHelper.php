@@ -22,7 +22,6 @@ class GraphHelper
     public static function login()
     {
         GraphHelper::initializeGraphForUserAuth();
-
         if ($_GET['action'] == 'login') {
             $login_url = "https://login.microsoftonline.com/" . GraphHelper::$tenantId . "/oauth2/v2.0/authorize";
             $params = array('client_id' => GraphHelper::$clientId,
@@ -80,6 +79,7 @@ class GraphHelper
                 $properties = $filteredRooms->getProperties();
                 return $properties["emailAddress"];
             }, $filteredRooms);
+            $globalarray = array();
             foreach ($roomEmails as $roommail) {
                 $currentTime = time();
                 $startDateTime = date("c", $currentTime);
@@ -96,7 +96,6 @@ class GraphHelper
                     CURLOPT_CUSTOMREQUEST => "GET",
                     CURLOPT_HTTPHEADER => array(
                         "Authorization: Bearer " . $token,
-                        "Content-Type: application/json"
                     ),
                 ));
 
@@ -113,17 +112,17 @@ class GraphHelper
                     if (count($schedules->value) > 0) {
                         $availability = "Not available";
                     }
-                    $scheduleData = array([
+                    $scheduleData = array(
                         "roomName" => $roommail,
                         "availability" => $availability
-                    ]
                     );
-                    $scheduleFile = fopen("schedules.json", "a");
-                    fwrite($scheduleFile, json_encode($scheduleData));
-                    fclose($scheduleFile);
-                }
+                    array_push($globalarray, $scheduleData);
 
+                }
             }
+            $scheduleFile = fopen("schedules.json", "a");
+            fwrite($scheduleFile, json_encode($globalarray));
+            fclose($scheduleFile);
         }
         if ($_GET['action'] == 'logout') {
             unset ($_SESSION['msatg']);
