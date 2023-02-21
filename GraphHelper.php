@@ -21,15 +21,8 @@ class GraphHelper
 
     public static function login()
     {
-        $token = [];
         GraphHelper::initializeGraphForUserAuth();
-        if (isset ($_SESSION['msatg'])) {
 
-            echo "<h2>Authenticated " . $_SESSION["uname"] . " </h2><br> ";
-
-            echo '<p><a href="?action=logout">Log Out</a></p>';
-
-        } else   echo '<h2><p>You can <a href="?action=login">Log In</a> with Microsoft</p></h2>';
         if ($_GET['action'] == 'login') {
             $login_url = "https://login.microsoftonline.com/" . GraphHelper::$tenantId . "/oauth2/v2.0/authorize";
             $params = array('client_id' => GraphHelper::$clientId,
@@ -63,6 +56,7 @@ class GraphHelper
                 $_SESSION['msatg'] = 1;  //auth and verified
                 $_SESSION['uname'] = $rez["displayName"];
                 $_SESSION['id'] = $rez["id"];
+
             }
             curl_close($ch);
             header('Location: http://localhost:8080/3Dpage.php');
@@ -135,5 +129,6 @@ class GraphHelper
             unset ($_SESSION['msatg']);
             header('Location: http://localhost:8080/3Dpage.php');
         }
+
     }
 }

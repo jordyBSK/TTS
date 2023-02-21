@@ -30,6 +30,9 @@ $graph->login();
                 Home
             </a>
             <a type="button" class="btn btn-success" href="3Dpage.php">VIEW ROOM</a>
+            <?php if(empty($_SESSION['msatg'])){?>
+                <a href="?action=login" type="button" class="btn btn-success">LOGIN</a>
+            <?php }?>
             <div class="dropdown">
                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
@@ -38,11 +41,8 @@ $graph->login();
                     <li><a class="dropdown-item" href="#">Action</a></li>
                     <li><a class="dropdown-item" href="#">Action</a></li>
                     <li><a class="dropdown-item" href="#">Action</a></li>
-                    <a type="button" class="btn btn-success" id="login">G3</a>
                 </ul>
             </div>
-
-            <input type="submit" class="btn btn-success" value="" name="LOGIN">
 
         </div>
     </nav>
