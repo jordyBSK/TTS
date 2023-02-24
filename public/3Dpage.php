@@ -30,7 +30,7 @@ require_once "../src/header.php";
 <!--Chargement video JS-->
 <script src="/style/chargement_page/chargement.js"></script>
 <!--md JS-->
-<script src="/style/md/md.js"></script>
+<script src="/style/dropdown/dropdown.js"></script>
 <!--Check image JS-->
 <script src="/style/checkImage/imageCheck.js"></script>
 
