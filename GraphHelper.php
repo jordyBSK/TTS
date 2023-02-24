@@ -1,5 +1,3 @@
-
-
 <?php
 use GuzzleHttp\{Client};
 use Microsoft\Graph\Graph;
@@ -57,7 +55,6 @@ class GraphHelper
                 $_SESSION['msatg'] = 1;  //auth and verified
                 $_SESSION['uname'] = $rez["displayName"];
                 $_SESSION['id'] = $rez["id"];
-
             }
             curl_close($ch);
             header('Location: http://localhost:8080/3Dpage.php');
@@ -128,7 +125,7 @@ class GraphHelper
         }
         if ($_GET['action'] == 'logout') {
             unset ($_SESSION['msatg']);
-            header('Location: http://localhost:8080/3Dpage.php');
+            header('Location: http://localhost:8080/index.php');
         }
 
     }
