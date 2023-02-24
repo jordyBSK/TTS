@@ -1,3 +1,5 @@
+
+
 <?php
 use GuzzleHttp\{Client};
 use Microsoft\Graph\Graph;
@@ -6,9 +8,8 @@ class GraphHelper
 {
     private static string $clientId;
     private static string $tenantId;
-    private static Graph $userClient;
-    public static string $userToken;
-    
+    public static Graph $userClient;
+
     public static function initializeGraphForUserAuth(): void
     {
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -55,79 +56,119 @@ class GraphHelper
                 $_SESSION['msatg'] = 1;  //auth and verified
                 $_SESSION['uname'] = $rez["displayName"];
                 $_SESSION['id'] = $rez["id"];
-
+                self::getRoom();
             }
             curl_close($ch);
             header('Location: http://localhost:8080/3Dpage.php');
-            //GET ROOM
-            GraphHelper::$userClient->setAccessToken($token);
-            $scheduleFile = fopen("schedules.json", "w");
-            fwrite($scheduleFile, json_encode("application/json"));
-            fclose($scheduleFile);
-            $graph = new Graph();
-            $graph->setBaseUrl("https://graph.microsoft.com/v1.0/");
-            $graph->setAccessToken($token);
-            $rooms = $graph->createRequest("GET", "https://graph.microsoft.com/v1.0/places/microsoft.graph.room")
-                ->setReturnType(Model\Room::class)
-                ->execute();
-            $filteredRooms = array_filter($rooms, function ($room) {
-                return str_contains($room->getDisplayName(), "Lausanne");
-            });
-            $jsonData = json_encode($filteredRooms);
-            file_put_contents("rooms.json", $jsonData);
-            $roomEmails = array_map(function ($filteredRooms) {
-                $properties = $filteredRooms->getProperties();
-                return $properties["emailAddress"];
-            }, $filteredRooms);
-            $globalarray = array();
-            foreach ($roomEmails as $roommail) {
-                $currentTime = time();
-                $startDateTime = date("c", $currentTime);
-                $endDateTime = date("c", $currentTime + 1);
-                $curl = curl_init();
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => "https://graph.microsoft.com/v1.0/users/" . urlencode($roommail) . "/calendar/calendarView?startDateTime=" . urlencode($startDateTime) . "&endDateTime=" . urlencode($endDateTime),
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => "",
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => "GET",
-                    CURLOPT_HTTPHEADER => array(
-                        "Authorization: Bearer " . $token,
-                    ),
-                ));
 
-                $response = curl_exec($curl);
-                $err = curl_error($curl);
-
-                curl_close($curl);
-
-                if ($err) {
-                    echo "cURL Error #:" . $err;
-                } else {
-                    $schedules = json_decode($response);
-                    $availability = "Available";
-                    if (count($schedules->value) > 0) {
-                        $availability = "Not available";
-                    }
-                    $scheduleData = array(
-                        "roomName" => $roommail,
-                        "availability" => $availability
-                    );
-                    array_push($globalarray, $scheduleData);
-
-                }
+            if ($_GET['action'] == 'logout') {
+                unset ($_SESSION['msatg']);
+                header('Location: http://localhost:8080/index.php');
             }
-            $scheduleFile = fopen("schedules.json", "a");
-            fwrite($scheduleFile, json_encode($globalarray));
-            fclose($scheduleFile);
         }
-        if ($_GET['action'] == 'logout') {
-            unset ($_SESSION['msatg']);
-            header('Location: http://localhost:8080/3Dpage.php');
-        }
+    }
 
+    public static function getRoom()
+    {
+        //GET ROOM
+        GraphHelper::$userClient->setAccessToken($_SESSION['t']);
+        $scheduleFile = fopen("schedules.json", "w");
+        fwrite($scheduleFile, json_encode("application/json"));
+        fclose($scheduleFile);
+        $graph = new Graph();
+        $graph->setBaseUrl("https://graph.microsoft.com/v1.0/");
+        $graph->setAccessToken($_SESSION['t']);
+        $rooms = $graph->createRequest("GET", "https://graph.microsoft.com/v1.0/places/microsoft.graph.room")
+            ->setReturnType(Model\Room::class)
+            ->execute();
+        $filteredRooms = array_filter($rooms, function ($room) {
+            return str_contains($room->getDisplayName(), "Lausanne");
+        });
+        $jsonData = json_encode($filteredRooms);
+        file_put_contents("rooms.json", $jsonData);
+        $roomEmails = array_map(function ($filteredRooms) {
+            $properties = $filteredRooms->getProperties();
+            return $properties["emailAddress"];
+        }, $filteredRooms);
+        $globalarray = array();
+        foreach ($roomEmails as $roommail) {
+            $currentTime = time();
+            $startDateTime = date("c", $currentTime);
+            $endDateTime = date("c", $currentTime + 1);
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://graph.microsoft.com/v1.0/users/" . urlencode($roommail) . "/calendar/calendarView?startDateTime=" . urlencode($startDateTime) . "&endDateTime=" . urlencode($endDateTime),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "Authorization: Bearer " . $_SESSION['t'],
+                ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+                echo "cURL Error #:" . $err;
+            } else {
+                $schedules = json_decode($response);
+                $availability = "Available";
+                if (count($schedules->value) > 0) {
+                    $availability = "Not available";
+                }
+                $scheduleData = array(
+                    "roomName" => $roommail,
+                    "availability" => $availability
+                );
+                array_push($globalarray, $scheduleData);
+
+            }
+        }
+        $scheduleFile = fopen("schedules.json", "a");
+        fwrite($scheduleFile, json_encode($globalarray));
+        fclose($scheduleFile);
+    }
+
+    public function getMicrosoftUserProfileinfo()
+    {
+        // Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['t'])) {
+            return;
+        }
+        // Récupérer l'image de profil de l'utilisateur
+        GraphHelper::$userClient->setAccessToken($_SESSION['t']);
+        $url = "https://graph.microsoft.com/v1.0/me/photo/\$value";
+        $headers = array(
+            "Authorization: Bearer " . $_SESSION['t'],
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        // Si la requête a réussi, afficher l'image de profil dans la navbar
+        if ($httpcode == 200) {
+            $image = '<img src="data:image/jpeg;base64,' . base64_encode($response) . '" class="rounded-circle" width="50" height="50">';
+            echo '<div class="nav-item dropdown">';
+            echo '<a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle user-action">';
+            echo $image;
+            echo $_SESSION['uname'];
+            echo '<div class="dropdown-menu">';
+            echo '<a href="#" class="dropdown-item"><i class="fa fa-user-o"></i> Profile</a>';
+            echo '<a href="?action=logout" class="dropdown-item">Logout</a>';
+            echo '</div>';
+        } else {
+            echo "Impossible de récupérer l'image de profil.";
+        }
     }
 }

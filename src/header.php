@@ -20,32 +20,26 @@ $graph->login();
 </head>
 <body>
 <header>
-    <nav class="navbar bg-light">
-        <div class="container">
-            <a class="navbar-brand " href="index.php">
-                <img src="/img/logo.svg" alt="" width="50" height="50" class="d-inline-block align-text-center">
-                Time to Space
-            </a>
-            <a class="navbar-brand" href="index.php">
-                Home
-            </a>
-            <a type="button" class="btn btn-success" href="3Dpage.php">VIEW ROOM</a>
-            <?php if(empty($_SESSION['msatg'])){?>
-                <a href="?action=login" type="button" class="btn btn-success">LOGIN</a>
-            <?php }else{?>
-                <a href="?action=logout" type="button" class="btn btn-success">LOGOUT from: </a>
-            <?php } ?>
-            <div class="dropdown">
-                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
+        <a class="navbar-brand " href="index.php">
+            <img src="/img/logo.svg" alt="" width="50" height="50" class="d-inline-block align-text-center">
+            Time to Space
+        </a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Collection of nav links, forms, and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <div class="navbar-nav ">
+                <a href="index.php" class="nav-item nav-link "><i class="fa fa-home"></i><span>Home</span></a>
+                <?php if (empty($_SESSION['msatg'])) { ?>
 
+                    <a href="?action=login" type="button" class="btn btn-success">LOGIN</a>
+                <?php } else { ?>
+                <a href="3Dpage.php" class="nav-item nav-link "><i class="fa fa-briefcase"></i><span>Rooms</span></a>
+                  <?php  $graph->getMicrosoftUserProfileinfo();
+                } ?>
+            </div>
         </div>
     </nav>
 </header>

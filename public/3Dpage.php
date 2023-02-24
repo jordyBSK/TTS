@@ -1,9 +1,8 @@
 <?php
 
 $title = "Overview";
-
 require "../vendor/autoload.php";
-require "../src/header.php";
+require_once "../src/header.php";
 ?>
 
 
@@ -37,80 +36,11 @@ require "../src/header.php";
 
 
 
-<!--Boutton étages-->
-<button id="AnimateBoutton" onclick="" class="boutton4">Choisir l'étage</button>
 
 <!--Chargement video-->
 <video id="background-video" autoplay muted>
-    <source src="/img/chargement.mp4" type="video/mp4">
+    <source src="public/img/chargement.mp4" type="video/mp4">
 </video>
-
-<!--Container three js-->
-<div id="container"></div>
-
-<!-- Bouton Select Room -->
-<div class="select-room" onclick="toggleDropdown()">Select Room <img class="arrow"
-        src="/style/dropdown/image/arrow.png" alt="">
-</div>
-
-<!-- Menu déroulant -->
-<div class="dropdown" id="dropdown">
-
-    <a href="#" id="roomTitle1" class="roomsLink" onclick="showContent(1)">Pleïades</a>
-    <div class="dropdown-content" id="content1">
-        <p>lien animation <br> <br> disponibilité</p>
-    </div>
-
-    <a href="#" id="roomTitle2" class="roomsLink" onclick="showContent(2)">Suchet</a>
-    <div class="dropdown-content" id="content2">
-        <p>lien animation <br> <br> disponibilité</p>
-    </div>
-
-    <a href="#" id="roomTitle3" class="roomsLink" onclick="showContent(3)">Chasseron</a>
-    <div class="dropdown-content" id="content3">
-        <p>lien animation <br> <br> disponibilité</p>
-    </div>
-
-    <a href="#" id="roomTitle4" class="roomsLink" onclick="showContent(4)">Argentine</a>
-    <div class="dropdown-content" id="content4">
-        <p>lien animation <br> <br> disponibilité</p>
-    </div>
-
-    <a href="#" id="roomTitle5" class="roomsLink" onclick="showContent(5)">Chamossaire</a>
-    <div class="dropdown-content" id="content5">
-        <p>lien animation <br> <br> disponibilité</p>
-    </div>
-
-    <a href="#" id="roomTitle6" class="roomsLink" onclick="showContent(6)">Mönch</a>
-    <div class="dropdown-content" id="content6">
-        <p>lien animation <br> <br> disponibilité</p>
-    </div>
-
-    <a href="#" id="roomTitle7" class="roomsLink" onclick="showContent(7)">Eiger</a>
-    <div class="dropdown-content" id="content7">
-        <p>lien animation <br> <br> disponibilité</p>
-    </div>
-
-    <a href="#" id="roomTitle8" class="roomsLink" onclick="showContent(8)">Dent du midi</a>
-    <div class="dropdown-content" id="content8">
-        <p>lien animation <br> <br> disponibilité</p>
-    </div>
-
-    <a href="#" id="roomTitle9" class="roomsLink" onclick="showContent(9)">Wengen</a>
-    <div class="dropdown-content" id="content9">
-        <p>lien animation <br> <br> disponibilité</p>
-    </div>
-
-    <a href="#" id="roomTitle10" class="roomsLink" onclick="showContent(10), size()">Jungfrau</a>
-    <div class="dropdown-content" id="content10">
-        <!--img dispo-->
-        <p>Contenu de l'option 10</p><img id="iconFree" class="" src="/style/checkImage/images/green.gif" alt="">
-
-    </div>
-
-
-</div>
-
 <!-- light JS -->
 <script src="/js/light.js"></script>
 
