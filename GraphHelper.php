@@ -8,7 +8,8 @@ class GraphHelper
 {
     private static string $clientId;
     private static string $tenantId;
-    public static Graph $userClient;
+    private static Graph $userClient;
+    public static string $userToken;
 
     public static function initializeGraphForUserAuth(): void
     {
@@ -56,90 +57,86 @@ class GraphHelper
                 $_SESSION['msatg'] = 1;  //auth and verified
                 $_SESSION['uname'] = $rez["displayName"];
                 $_SESSION['id'] = $rez["id"];
-                self::getRoom();
+
             }
             curl_close($ch);
             header('Location: http://localhost:8080/3Dpage.php');
+            //GET ROOM
+            GraphHelper::$userClient->setAccessToken($token);
+            $scheduleFile = fopen("schedules.json", "w");
+            fwrite($scheduleFile, json_encode("application/json"));
+            fclose($scheduleFile);
+            $graph = new Graph();
+            $graph->setBaseUrl("https://graph.microsoft.com/v1.0/");
+            $graph->setAccessToken($token);
+            $rooms = $graph->createRequest("GET", "https://graph.microsoft.com/v1.0/places/microsoft.graph.room")
+                ->setReturnType(Model\Room::class)
+                ->execute();
+            $filteredRooms = array_filter($rooms, function ($room) {
+                return str_contains($room->getDisplayName(), "Lausanne");
+            });
+            $jsonData = json_encode($filteredRooms);
+            file_put_contents("rooms.json", $jsonData);
+            $roomEmails = array_map(function ($filteredRooms) {
+                $properties = $filteredRooms->getProperties();
+                return $properties["emailAddress"];
+            }, $filteredRooms);
+            $globalarray = array();
+            foreach ($roomEmails as $roommail) {
+                $currentTime = time();
+                $startDateTime = date("c", $currentTime);
+                $endDateTime = date("c", $currentTime + 1);
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://graph.microsoft.com/v1.0/users/" . urlencode($roommail) . "/calendar/calendarView?startDateTime=" . urlencode($startDateTime) . "&endDateTime=" . urlencode($endDateTime),
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_HTTPHEADER => array(
+                        "Authorization: Bearer " . $token,
+                    ),
+                ));
 
-            if ($_GET['action'] == 'logout') {
-                unset ($_SESSION['msatg']);
-                header('Location: http://localhost:8080/index.php');
-            }
-        }
-    }
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
 
-    public static function getRoom()
-    {
-        //GET ROOM
-        GraphHelper::$userClient->setAccessToken($_SESSION['t']);
-        $scheduleFile = fopen("schedules.json", "w");
-        fwrite($scheduleFile, json_encode("application/json"));
-        fclose($scheduleFile);
-        $graph = new Graph();
-        $graph->setBaseUrl("https://graph.microsoft.com/v1.0/");
-        $graph->setAccessToken($_SESSION['t']);
-        $rooms = $graph->createRequest("GET", "https://graph.microsoft.com/v1.0/places/microsoft.graph.room")
-            ->setReturnType(Model\Room::class)
-            ->execute();
-        $filteredRooms = array_filter($rooms, function ($room) {
-            return str_contains($room->getDisplayName(), "Lausanne");
-        });
-        $jsonData = json_encode($filteredRooms);
-        file_put_contents("rooms.json", $jsonData);
-        $roomEmails = array_map(function ($filteredRooms) {
-            $properties = $filteredRooms->getProperties();
-            return $properties["emailAddress"];
-        }, $filteredRooms);
-        $globalarray = array();
-        foreach ($roomEmails as $roommail) {
-            $currentTime = time();
-            $startDateTime = date("c", $currentTime);
-            $endDateTime = date("c", $currentTime + 1);
-            $curl = curl_init();
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://graph.microsoft.com/v1.0/users/" . urlencode($roommail) . "/calendar/calendarView?startDateTime=" . urlencode($startDateTime) . "&endDateTime=" . urlencode($endDateTime),
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => array(
-                    "Authorization: Bearer " . $_SESSION['t'],
-                ),
-            ));
+                curl_close($curl);
 
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                } else {
+                    $schedules = json_decode($response);
+                    $availability = "Available";
+                    if (count($schedules->value) > 0) {
+                        $availability = "Not available";
+                    }
+                    $scheduleData = array(
+                        "roomName" => $roommail,
+                        "availability" => $availability
+                    );
+                    array_push($globalarray, $scheduleData);
 
-            curl_close($curl);
-
-            if ($err) {
-                echo "cURL Error #:" . $err;
-            } else {
-                $schedules = json_decode($response);
-                $availability = "Available";
-                if (count($schedules->value) > 0) {
-                    $availability = "Not available";
                 }
-                $scheduleData = array(
-                    "roomName" => $roommail,
-                    "availability" => $availability
-                );
-                array_push($globalarray, $scheduleData);
-
             }
+            $scheduleFile = fopen("schedules.json", "w");
+            fwrite($scheduleFile, json_encode($globalarray));
+            fclose($scheduleFile);
         }
-        $scheduleFile = fopen("schedules.json", "a");
-        fwrite($scheduleFile, json_encode($globalarray));
-        fclose($scheduleFile);
+        if ($_GET['action'] == 'logout') {
+            unset ($_SESSION['msatg']);
+            header('Location: http://localhost:8080/3Dpage.php');
+        }
+
     }
 
-    public function getMicrosoftUserProfileinfo()
+    public static function getMicrosoftUserProfileinfo()
     {
         // Vérifier si l'utilisateur est connecté
-        if (!isset($_SESSION['t'])) {
+        if (!isset($_SESSION['msatg'])) {
             return;
         }
         // Récupérer l'image de profil de l'utilisateur
@@ -170,5 +167,4 @@ class GraphHelper
         } else {
             echo "Impossible de récupérer l'image de profil.";
         }
-    }
-}
+    }}
