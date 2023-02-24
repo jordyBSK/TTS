@@ -7,7 +7,7 @@ setInterval(getroomstatus, 5 * 60 * 1000)
 const positions = [
     {
         roomName: "lausanne.pleiades@jobtrek.ch",
-        position: { x: -20, y: 100, z: -20 }
+        position: { x: -20, y: 50, z: 0 }
     },
     {
         roomName: "lausanne.suchet@jobtrek.ch",
@@ -72,11 +72,11 @@ fetch('/schedules.json')
 }
 
 
-function addLight(position, disponibilite) {
+function addLight(position, disponibilité) {
 
-    let couleur = disponibilite === "Available" ? 'green' : 'red'
+    let couleur = disponibilité === "Available" ? 'green' : 'red'
 
-    let spotLight = new THREE.SpotLight(couleur, 300);
+    let spotLight = new THREE.SpotLight(couleur, 100);
 
     spotLight.position.set(position.x, position.y, position.z);
 

@@ -31,7 +31,7 @@
 }
 
 /* Styles pour le menu déroulant */
-.dropdown {
+.md {
     display: none;
     position: absolute;
     top: 155px;
@@ -47,7 +47,7 @@
 }
 
 /* Styles pour chaque option de menu */
-.dropdown a {
+.md a {
     display: block;
     padding: 5px 10px;
     margin-bottom: 10px;
@@ -61,7 +61,7 @@
     margin-left: 40px;
 }
 
-.dropdown:hover {
+.md:hover {
     display: block;
     transform: translateY(-5px);
     box-shadow: 0 10px 15px #3c3c3c;
@@ -69,12 +69,12 @@
 }
 
 /* Styles pour l'option de menu sélectionnée */
-.dropdown a.selected {
+.md a.selected {
     background-color: #ccc;
 }
 
 /* Styles pour les liens de salle dans le menu déroulant */
-.dropdown a.roomsLink:hover {
+.md a.roomsLink:hover {
     background-color: #dcdcdc;
     transform: none;
     transition: none;
@@ -86,7 +86,7 @@
 }
 
 /* Styles pour le contenu affiché lorsque l'option est sélectionnée */
-.dropdown-content {
+.md-content {
     display: none;
     padding: 10px;
     margin-top: 10px;
