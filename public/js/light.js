@@ -1,4 +1,5 @@
-
+getroomstatus()
+setInterval(getroomstatus, 5 * 60 * 1000)
 
 
 // script pour json : 
@@ -49,6 +50,8 @@ const positions = [
 ]
 
 // Récupération des données via une requête HTTP GET
+function getroomstatus(){
+    console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
 fetch('/schedules.json')
     .then(response => response.json())
     .then(salles => {
@@ -66,7 +69,7 @@ fetch('/schedules.json')
 
         }
     });
-
+}
 
 
 function addLight(position, disponibilité) {
