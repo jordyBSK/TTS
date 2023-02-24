@@ -33,7 +33,6 @@ $graph->login();
             <div class="navbar-nav ">
                 <a href="index.php" class="nav-item nav-link "><i class="fa fa-home"></i><span>Home</span></a>
                 <?php if (empty($_SESSION['msatg'])) { ?>
-
                     <a href="?action=login" type="button" class="btn btn-success">LOGIN</a>
                 <?php } else { ?>
                 <a href="3Dpage.php" class="nav-item nav-link "><i class="fa fa-briefcase"></i><span>Rooms</span></a>
