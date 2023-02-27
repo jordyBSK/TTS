@@ -64,6 +64,8 @@ class GraphHelper
         }
         if ($_GET['action'] == 'logout') {
             unset ($_SESSION['msatg']);
+            unset ($_SESSION['t']);
+            unset ($_SESSION['uname']);
             header('Location: http://localhost:8080/index.php');
         }
 
@@ -97,7 +99,7 @@ class GraphHelper
             echo $image;
             echo $_SESSION['uname'];
             echo '<div class="dropdown-menu">';
-            echo '<a href="#" class="dropdown-item"><i class="fa fa-user-o"></i> Profile</a>';
+            echo '<a href="https://myaccount.microsoft.com" class="dropdown-item"><i class="fa fa-user-o"></i> Profile</a>';
             echo '<a href="?action=logout" class="dropdown-item">Logout</a>';
             echo '</div>';
         } else {
@@ -168,7 +170,74 @@ class GraphHelper
             }
         }
         $scheduleFile = fopen("schedules.json", "w");
-        fwrite($scheduleFile, "\n".json_encode($globalarray));
+        fwrite($scheduleFile, "\n" . json_encode($globalarray));
         fclose($scheduleFile);
+        self::GetEventuser($roomEmails);
+    }
+
+    private static function GetEventuser($jsonData): void
+    {
+        // Vérifier que la liste des salles n'est pas nulle
+        if ($jsonData && isset($jsonData)) {
+            $roomEmails = $jsonData;
+            // Parcours de chaque salle pour récupérer ses événements
+            $globalarray = [];
+            foreach ($roomEmails as $room) {
+                // Configuration de l'objet cURL pour envoyer la requête pour récupérer les événements de la salle
+                $currentTime = time();
+                $startDateTime = date("c", $currentTime);
+                $endDateTime = date("c", $currentTime + 1);
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://graph.microsoft.com/v1.0/users/" . urlencode($room) . "/calendar/calendarView?startDateTime=" . urlencode($startDateTime) . "&endDateTime=" . urlencode($endDateTime),
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_HTTPHEADER => array(
+                        "Authorization: Bearer " . $_SESSION['t'],
+                        "Content-Type: application/json"
+                    ),
+                ));
+
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+
+                curl_close($curl);
+
+                // Transformation de la réponse JSON en un tableau associatif PHP
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                } else {
+                    $schedules = json_decode($response,true);
+                    foreach ($schedules['value'] as $event) {
+                        if($event != null){
+                        // On récupère le sujet de l'événement
+                        $subject = $event['subject'];
+                        // On récupère le tableau "organizer"
+                        $organizer = $event['organizer'];
+                        $location = $event['location'];
+
+                        // On stocke les données dans un nouvel array
+                        $eventData = array(
+                            'subject' => $subject,
+                            'organizer' => $organizer,
+                            'lieux' => $location
+                        );
+
+                        // On ajoute l'array $eventData à l'array "events" du fichier JSON
+                        $schedule['events'] = $eventData;
+                        array_push($globalarray,$schedule);
+                        }
+                    }
+                }
+            }
+            $eventfile = fopen("events.json", "w");
+            fwrite($eventfile, "\n" . json_encode($globalarray));
+            fclose($eventfile);
+        }
     }
 }
