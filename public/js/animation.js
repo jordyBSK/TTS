@@ -33,7 +33,6 @@ wengen.addEventListener('click', function () {
         y: 200,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
@@ -43,7 +42,6 @@ wengen.addEventListener('click', function () {
         y: 20,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
@@ -53,23 +51,23 @@ wengen.addEventListener('click', function () {
 const pleiades = document.getElementById('roomTitle1')
 const plaiadesTl = gsap.timeline();
 pleiades.addEventListener('click', function () {
+
     plaiadesTl.to(camera.position, {
         z: 300,
         x: 100,
         y: 200,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
     plaiadesTl.to(camera.position, {
-        z: 340,
-        x: 120,
+        z: 0,
+        x: 12,
         y: 20,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
+
 
         }
     })
@@ -77,29 +75,30 @@ pleiades.addEventListener('click', function () {
 
 // Suchet
 const suchet = document.getElementById('roomTitle2')
-const suchetTL = gsap.timeline();
+const suchetTl = gsap.timeline();
 suchet.addEventListener('click', function () {
-    suchetTL.to(camera.position, {
+
+    suchetTl.to(camera.position, {
         z: 300,
         x: 100,
         y: 200,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
     suchetTl.to(camera.position, {
-        z: 340,
-        x: 120,
-        y: 20,
+        z: 0,
+        x: 20,
+        y: 2,
         onUpdate: function () {
-
-            camera.lookAt(cube.position);
+            camera.position.x += -13; // zoom avant
 
         }
     })
+
 });
+
 
 // Chasseron
 const chasseron = document.getElementById('roomTitle3')
@@ -111,17 +110,15 @@ chasseron.addEventListener('click', function () {
         y: 200,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
     chasseronTL.to(camera.position, {
-        z: 340,
-        x: 120,
-        y: 20,
+        z: 4,
+        x: 20,
+        y: 6,
         onUpdate: function () {
-
-            camera.lookAt(cube.position);
+            camera.position.x += -13; // zoom avant
 
         }
     })
@@ -137,7 +134,6 @@ argentine.addEventListener('click', function () {
         y: 200,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
@@ -147,7 +143,6 @@ argentine.addEventListener('click', function () {
         y: 20,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
@@ -163,17 +158,15 @@ chamossaire.addEventListener('click', function () {
         y: 200,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
     chamossaireTL.to(camera.position, {
-        z: 340,
-        x: 120,
-        y: 20,
+        z: 0,
+        x: 20,
+        y: 2,
         onUpdate: function () {
-
-            camera.lookAt(cube.position);
+            camera.position.x += -13; // zoom avant
 
         }
     })
@@ -189,7 +182,6 @@ monch.addEventListener('click', function () {
         y: 200,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
@@ -199,7 +191,6 @@ monch.addEventListener('click', function () {
         y: 20,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
@@ -215,7 +206,6 @@ eiger.addEventListener('click', function () {
         y: 200,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
@@ -225,7 +215,6 @@ eiger.addEventListener('click', function () {
         y: 20,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
@@ -241,7 +230,6 @@ dentDuMidi.addEventListener('click', function () {
         y: 200,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })
@@ -251,7 +239,6 @@ dentDuMidi.addEventListener('click', function () {
         y: 20,
         onUpdate: function () {
 
-            camera.lookAt(cube.position);
 
         }
     })

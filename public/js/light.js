@@ -7,7 +7,7 @@ setInterval(getroomstatus, 5 * 60 * 1000)
 const positions = [
     {
         roomName: "lausanne.pleiades@jobtrek.ch",
-        position: { x: -20, y: 100, z: -20 }
+        position: { x: -20, y: 40, z: -20 }
     },
     {
         roomName: "lausanne.suchet@jobtrek.ch",
@@ -49,34 +49,33 @@ const positions = [
     }
 ]
 
-// Récupération des données via une requête HTTP GET
-function getroomstatus(){
-    console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-fetch('/schedules.json')
-    .then(response => response.json())
-    .then(salles => {
-        // Création de la liste
-        console.log(salles)
-        for (let salle of positions) {
+function getroomstatus() {
+    console.log("you know man")
+    fetch('/schedules.json')
+        .then(response => response.json())
+        .then(salles => {
+            // Création de la liste
+            console.log(salles)
+            for (let salle of positions) {
 
-            console.log(salle)
+                console.log(salle)
 
-            let room = salles.find(s => {
-                return s.roomName === salle.roomName
-            })
+                let room = salles.find(s => {
+                    return s.roomName === salle.roomName
+                })
 
-            addLight(salle.position, room.availability)
+                addLight(salle.position, room.availability)
 
-        }
-    });
+            }
+        });
 }
 
 
-function addLight(position, disponibilite) {
+function addLight(position, disponibilité) {
 
-    let couleur = disponibilite === "Available" ? 'green' : 'red'
+    let couleur = disponibilité === "Available" ? 'green' : 'red'
 
-    let spotLight = new THREE.SpotLight(couleur, 300);
+    let spotLight = new THREE.SpotLight(couleur, 100);
 
     spotLight.position.set(position.x, position.y, position.z);
 
@@ -89,13 +88,6 @@ function addLight(position, disponibilite) {
     currentSpotLight = spotLight;
 
 
-    const lightHelper = new THREE.SpotLightHelper(spotLight);
-    scene.add(lightHelper);
+    // const lightHelper = new THREE.SpotLightHelper(spotLight);
+    // scene.add(lightHelper);
 }
-
-
-    // Créer toute les lumières avec leur position
-    // stocker chaque limière dans un tableau
-
-
-    // boucler sur les lumières et changer leur coueleur en fonction du room.json

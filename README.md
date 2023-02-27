@@ -1,5 +1,5 @@
 # TTS
-credit to @FY4ll and @Adb.me
+credit to @FY4ll and @Ad.me
 
 # Project explanation
 
