@@ -5,6 +5,9 @@ session_start();
 $_SESSION['state'] = session_id();
 $graph = new GraphHelper();
 $graph->login();
+if(isset($_SESSION['t'])){
+    $graph->getRoom();
+}
 ?>
 <!doctype html>
 <HTML>
@@ -35,8 +38,8 @@ $graph->login();
                 <?php if (empty($_SESSION['msatg'])) { ?>
                     <a href="?action=login" type="button" class="btn btn-success">LOGIN</a>
                 <?php } else { ?>
-                <a href="3Dpage.php" class="nav-item nav-link "><i class="fa fa-briefcase"></i><span>Rooms</span></a>
-                  <?php  $graph->getMicrosoftUserProfileinfo();
+                    <a href="3Dpage.php" class="nav-item nav-link "><i class="fa fa-briefcase"></i><span>Rooms</span></a>
+                    <?php  $graph->getMicrosoftUserProfileinfo();
                 } ?>
             </div>
         </div>
