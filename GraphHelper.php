@@ -229,7 +229,7 @@ class GraphHelper
                         );
 
                         // On ajoute l'array $eventData à l'array "events" du fichier JSON
-                        $schedule[]['events'][] = $eventData;
+                        $schedule['events'] = $eventData;
                         array_push($globalarray,$schedule);
                         }
                     }
