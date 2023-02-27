@@ -7,7 +7,7 @@
 
 /* Styles pour le bouton "Select Room" */
 .select-room {
-    top: 115px;
+    top: 160px;
     left: 10px;
     display: inline-block;
     background-color: #198754;
@@ -34,7 +34,7 @@
 .md {
     display: none;
     position: absolute;
-    top: 155px;
+    top: 210px;
     /* Ajuster la position verticale si nécessaire */
     left: 0;
     background-color: #eee;
@@ -64,7 +64,7 @@
 .md:hover {
     display: block;
     transform: translateY(-5px);
-    box-shadow: 0 10px 15px #3c3c3c;
+    box-shadow: 0 10px 15px #000000;
     transition: all 0.2s ease-in-out;
 }
 
