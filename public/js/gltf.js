@@ -13,7 +13,7 @@ document.getElementById('roomTitle8'),
 document.getElementById('roomTitle9'),
 document.getElementById('roomTitle10')];
 
-loader.load('/gltfImport/finalAnimation.glb', function (gltf) {
+loader.load('/gltfImport/final.glb', function (gltf) {
     gltf.scene.position.set(0, -50, 0);
     gltf.scene.scale.set(20, 20, 20);
     scene.add(gltf.scene);
@@ -75,6 +75,16 @@ playButton2.forEach(button => {
         }, 3000);
     });
 });
+
+
+action1 = mixer.clipAction(clip1);
+action2 = mixer.clipAction(clip2);
+
+// Ajoutez cette ligne pour jouer en boucle l'animation 1 :
+action1.setLoop(THREE.LoopRepeat);
+
+// Ajoutez cette ligne pour jouer en boucle l'animation 2 :
+action2.setLoop(THREE.LoopRepeat);
 
 
 function animate() {
